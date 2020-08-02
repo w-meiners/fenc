@@ -1,3 +1,4 @@
+# %load file_encryption.py
 import nacl.public, nacl.encoding
 import os
 import stat
@@ -71,6 +72,13 @@ def read_public_key(fullname):
         key = nacl.public.PublicKey(f.read(),encoder=nacl.encoding.HexEncoder)
     
     return key
+
+def create_hexvalues_of_keypair():
+    '''Create a secret key and return the corresponding hex-values i.e. to store in KeePassX'''
+    sk = nacl.public.PrivateKey.generate()
+    sk_hex = sk.encode(encoder=nacl.encoding.HexEncoder)
+    pk_hex = sk.public_key.encode(encoder=nacl.encoding.HexEncoder)
+    return (sk_hex,pk_hex)
 
 def secret_key_from_hex(value):
     '''Create secret key from value stored in hexencoding i.e. in KeePassX'''
